@@ -92,7 +92,7 @@
       For exports with columns like <code>T1;T2;H1;H2</code> (Memo Graph / GraphMemoOriginal) or
       <code>Temp;Humi;Vbat</code> (ATC GraphMemo). Default data below is embedded in this page:
       <strong>26–27 April 2026</strong> (Australia/Sydney calendar days). Use <em>Open CSV</em> for other files.
-      Drag on the chart to zoom; double-click to reset. Toggle traces in the legend.
+      Drag on the chart to zoom; double-click to reset. For T1/T2/H1/H2 exports, only <strong>T1</strong> is shown at first; click the legend to show the others.
     </p>
   </header>
   <div class="toolbar">
@@ -218,10 +218,10 @@
 
     if (isMemoOriginal && colCount >= 4) {
       traces.push(
-        { x, y: rows.map((r) => r.values[0]), name: 'T1 (°C) low', mode: 'lines', line: { width: 1.8, color: '#2ecc71' } },
-        { x, y: rows.map((r) => r.values[1]), name: 'T2 (°C) high', mode: 'lines', line: { width: 1.8, color: '#e74c3c' } },
-        { x, y: rows.map((r) => r.values[2]), name: 'H1 (%) low', mode: 'lines', line: { width: 1.6, color: '#3498db' }, yaxis: 'y2' },
-        { x, y: rows.map((r) => r.values[3]), name: 'H2 (%) high', mode: 'lines', line: { width: 1.6, color: '#9b59b6' }, yaxis: 'y2' }
+        { x, y: rows.map((r) => r.values[0]), name: 'T1 (°C) low', mode: 'lines', line: { width: 1.8, color: '#2ecc71' }, visible: true },
+        { x, y: rows.map((r) => r.values[1]), name: 'T2 (°C) high', mode: 'lines', line: { width: 1.8, color: '#e74c3c' }, visible: 'legendonly' },
+        { x, y: rows.map((r) => r.values[2]), name: 'H1 (%) low', mode: 'lines', line: { width: 1.6, color: '#3498db' }, yaxis: 'y2', visible: 'legendonly' },
+        { x, y: rows.map((r) => r.values[3]), name: 'H2 (%) high', mode: 'lines', line: { width: 1.6, color: '#9b59b6' }, yaxis: 'y2', visible: 'legendonly' }
       );
     } else if (isAtcMemo && colCount >= 2) {
       const col = function (kind) {
