@@ -1,5 +1,5 @@
-# Deploy static site from docs/ to GitHub Pages.
-# After first push: Settings → Pages → Source → GitHub Actions.
+# Publishes static site to GitHub Pages (Actions source).
+# Settings → Pages → Build and deployment → Source: GitHub Actions (not “Deploy from branch” unless you use /docs or root index).
 name: Deploy Pages
 
 on:
@@ -29,10 +29,17 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
+      - name: Assemble site
+        run: |
+          mkdir -p _site
+          # Prefer docs/; fall back to repo root (covers both layouts)
+          if [ -f docs/index.html ]; then cp docs/index.html _site/index.html; elif [ -f index.html ]; then cp index.html _site/index.html; else echo 'No index.html'; exit 1; fi
+          touch _site/.nojekyll
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: docs
+          path: _site
 
       - name: Deploy to GitHub Pages
         id: deployment
