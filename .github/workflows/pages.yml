@@ -1,5 +1,6 @@
-# Publishes static site to GitHub Pages (Actions source).
-# Settings → Pages → Build and deployment → Source: GitHub Actions (not “Deploy from branch” unless you use /docs or root index).
+# Publishes repo-root index.html to GitHub Pages.
+# Settings → Pages → Source: GitHub Actions (recommended).
+# Site: https://<user>.github.io/<repo>/
 name: Deploy Pages
 
 on:
@@ -32,8 +33,8 @@ jobs:
       - name: Assemble site
         run: |
           mkdir -p _site
-          # Prefer docs/; fall back to repo root (covers both layouts)
-          if [ -f docs/index.html ]; then cp docs/index.html _site/index.html; elif [ -f index.html ]; then cp index.html _site/index.html; else echo 'No index.html'; exit 1; fi
+          test -f index.html
+          cp index.html _site/index.html
           touch _site/.nojekyll
 
       - name: Upload artifact
